@@ -20,11 +20,8 @@ exports = module.exports = function(app) {
       });
     }
     var opts = {
-      userLocation: {
-        lat: 12.9784,
-        lng: 77.6408
-      },
-      pink: false
+      userLocation: payload.userLocation,
+      pink: payload.pink || false
     };
     Search.findTaxi(opts)
       .then(closestTaxi => {

@@ -4,7 +4,6 @@ const Util = require("../utils");
 
 exports = module.exports = function(app) {
   var Taxi = app.taxi;
-  console.log('search service ', Taxi);
   class Search {
     constructor() {}
     closestTaxi(userLocation, taxis) {
