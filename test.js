@@ -68,7 +68,6 @@ test("book taxis", () => {
   };
   Search.findTaxi(opts)
     .then(closestTaxi => {
-      console.log(closestTaxi);
       expect(closestTaxi).objectContaining(taxiTest);
       Taxi.block(closestTaxi)
         .then(blockedTaxi => {
