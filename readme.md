@@ -36,4 +36,5 @@ var endTripPayloadBlueprint = {
 }
 ```
 
+
 For trying out the API, try this [postman collection](https://www.getpostman.com/collections/dc37bb5b8fcc74586bd7).
