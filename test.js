@@ -9,7 +9,7 @@ var app = {};
 var trips = [];
 
 const Taxi = new TaxiService(taxis);
-
+app.taxi = Taxi;
 const SearchService = require("./src/services/search.service")(app);
 const TripService = require("./src/services/trip.service")(app);
 
@@ -61,6 +61,13 @@ test("spawning of taxis", () => {
   );
 });
 
+test("distance calculation ", () => {
+  let lngRange = [77.37, 77.39];
+  let latRange = [12.59, 12, 57];
+  let location1 = { lat: latRange[0], lng: lngRange[0] },
+    location2 = { lat: latRange[1], lng: lngRange[1] };
+  expect(Utils.locationDistance(location1, location2)).toBe(0.5903388857258174);
+});
 test("book taxis", () => {
   var opts = {
     userLocation: Utils.getRandomLatLng(),
@@ -68,45 +75,41 @@ test("book taxis", () => {
   };
   Search.findTaxi(opts)
     .then(closestTaxi => {
-      expect(closestTaxi).objectContaining(taxiTest);
+      expect(closestTaxi).toEqual(expect.objectContaining(taxiTest));
       Taxi.block(closestTaxi)
         .then(blockedTaxi => {
-          expect(closestTaxi).objectContaining(taxiTest);
+          expect(closestTaxi).toEqual(expect.objectContaining(taxiTest));
           Trip.start(blockedTaxi)
             .then(trip => {
               trips.push(trip);
-              expect(trip).toEqual(tripTest);
+              expect(trip).toEqual(expect.objectContaining(tripTest));
             })
             .catch(err => {
-              expect(err).objectContaining({
-                message: expect.any(String)
-              });
+              expect(err).toEqual(expect.objectContaining(errorTest));
             });
         })
         .catch(err => {
-          expect(err).objectContaining({
-            message: expect.any(String)
-          });
+          expect(err).toEqual(expect.objectContaining(errorTest));
         });
       //Taxi.block
       //Trip.create
     })
     .catch(err => {
-      expect(err).objectContaining(errorTest);
+      expect(err).toEqual(expect.objectContaining(errorTest));
     });
 });
-
-  // test("End trip", () => {
-  //   let tripId = trips[0].id;
-  //   Trip.endTrip(tripId)
-  //     .then(trip => {
-  //       expect(trip).objectContaining(tripTest);
-  //     })
-  //     .catch(err => {
-  //       expect(err).objectContaining(errorTest);
-  //     });
-  // });
-
+test("End trip", () => {
+  if (trips[0]) {
+    let tripId = trips[0].id;
+    Trip.endTrip(tripId)
+      .then(trip => {
+        expect(trip).toEuqal(expect.objectContaining(tripTest));
+      })
+      .catch(err => {
+        expect(err).toEqual(expect.objectContaining(errorTest));
+      });
+  }
+});
 
 //no taxis
 

@@ -48,7 +48,6 @@ class Taxi {
     });
   }
   unblock(taxiId) {
-      console.log('taxi id is ', taxiId);
     return new Promise((resolve, reject) => {
       let thisTaxi = this.getTaxiById(taxiId);
       if (!thisTaxi) {

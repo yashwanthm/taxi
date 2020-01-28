@@ -44,7 +44,6 @@ exports = module.exports = function(app) {
     endTrip(tripId) {
       return new Promise((resolve, reject) => {
         let trip = this.getTrip(tripId);
-        console.log("trip is ", trip.status);
         if (trip.status != "ongoing") {
           return reject({ message: "The trip no longer seems to be ongoing" });
         }
